@@ -3,7 +3,7 @@ import os
 
 import numpy as np
 import pandas as pd
-from vos import Client
+# from vos import Client
 
 import brightness_temp
 import config
@@ -44,14 +44,9 @@ def get_features(catalog, with_repeaters, with_sub_num):
     :return:
         pandas.DataFrame
     """
-    chime_features_names = catalog.drop(
-        columns=['ra', 'ra_notes', 'ra_err', 'dec_notes', 'exp_up_notes', 'exp_low_notes',
-                 'flux_notes', 'fluence_notes', 'dec', 'dec_err', 'gl', 'gb', 'exp_up',
-                 'exp_up_err', 'exp_low', 'exp_low_err', 'low_ft_68', 'up_ft_68', 'low_ft_95',
-                 'up_ft_95', 'dm_fitb_err', 'dm_exc_ne2001', 'dm_exc_ymw16', 'scat_time_err',
-                 'flux_err', 'fluence_err', 'mjd_400', 'mjd_400_err', 'mjd_inf', 'mjd_inf_err',
-                 'width_fitb_err', 'sp_idx_err', 'sp_run_err', 'chi_sq', 'dof', 'excluded_flag', 'flag_frac',
-                 'scat_time', 'width_fitb'])
+    chime_features_names = catalog[['tns_name', 'previous_name', 'repeater_name', 'bonsai_snr', 'bonsai_dm',
+       'snr_fitb', 'dm_fitb', 'bc_width', 'flux', 'fluence', 'sub_num',
+       'sp_idx', 'sp_run', 'high_freq', 'low_freq', 'peak_freq']]
     if not with_repeaters:
         chime_features_names = chime_features_names[chime_features_names['repeater_name'] == '-9999']
 

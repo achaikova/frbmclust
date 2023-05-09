@@ -31,7 +31,7 @@ def get_tb_params(frb_names, cluster_labels, catalog, emission_freq, precalc_z):
             dm * u.pc / u.cm ** 3,
             Planck18)
         dA = z_da_precalc[z_da_precalc['tns_name'] == name]['dA'].tolist()[0] if precalc_z else \
-            cosmocalc(z, const.BrightnessTemperature.H0, const.BrightnessTemperature.WM,
+            cosmocalc.cosmocalc(z, const.BrightnessTemperature.H0, const.BrightnessTemperature.WM,
                       const.BrightnessTemperature.WV)['DA_Mpc'] / 10 ** 3
 
         d.update({'tns_name': name,

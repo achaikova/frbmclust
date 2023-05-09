@@ -3,7 +3,7 @@ import pandas as pd
 import config
 import numpy as np
 import h5py
-from vos import Client
+# from vos import Client
 
 
 def repack():
@@ -12,9 +12,11 @@ def repack():
     Obtained profile is mean of calibrated waterfall over each frequency channel
     """
     catalog = pd.read_csv(config.CHIME_FRB_CATALOG)
-    frbs = np.unique(catalog['tns_name'])
+    tmp = catalog['tns_name'].values
+    frbs = np.unique(tmp)
     if not os.path.exists(config.REPACKED_WATERFALL):
         os.makedirs(config.REPACKED_WATERFALL)
+    res = []
     for frb in frbs:
         filename = f'{frb}_waterfall.h5'
         data = {}
@@ -28,6 +30,9 @@ def repack():
                     os.remove(config.RESOURCES_DIR / filename)
                 continue
         with h5py.File(config.RESOURCES_DIR / filename, "r") as datafile:
+            if 'calibrated_wfall' not in list(datafile['frb'].keys()):
+                res.append(filename)
+                continue
             cal_wfall = datafile['frb']["calibrated_wfall"][:]
             cal_ts = np.nanmean(cal_wfall, axis=0)
             ts = np.nansum(datafile['frb']["wfall"][:], axis=0)
@@ -38,7 +43,8 @@ def repack():
         with h5py.File(config.REPACKED_WATERFALL / f"{frb}.h5", "w") as datafile:
             datafile.create_dataset('cal_ts', data=data[frb]['cal_ts'])
             datafile.create_dataset('ts', data=data[frb]['ts'])
-        os.remove(config.RESOURCES_DIR / filename)
+        # os.remove(config.RESOURCES_DIR / filename)
+    print("not repacked:", res)
 
 
 if __name__ == '__main__':
