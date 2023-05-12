@@ -1,6 +1,6 @@
 import config
 from frb.dm import igm
-from cosmocalc import cosmocalc
+import cosmocalc
 from astropy.cosmology import Planck18
 from astropy import units as u
 import matplotlib.pyplot as plt

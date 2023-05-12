@@ -3,6 +3,8 @@ import os
 
 import numpy as np
 import pandas as pd
+from vos import Client
+
 # from vos import Client
 
 import brightness_temp
