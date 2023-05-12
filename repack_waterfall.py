@@ -3,7 +3,7 @@ import pandas as pd
 import config
 import numpy as np
 import h5py
-# from vos import Client
+from vos import Client
 
 
 def repack():
