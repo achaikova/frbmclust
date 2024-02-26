@@ -27,15 +27,13 @@ def get_tb_params(frb_names, cluster_labels, catalog, emission_freq, precalc_z):
     for i, name in enumerate(frb_names):
         d = {}
         dm = catalog[catalog['tns_name'] == name]['dm_fitb'].tolist()[0]
-        try:
-            z = z_da_precalc[z_da_precalc['tns_name'] == name]['z'].tolist()[0] if precalc_z else igm.z_from_DM(
-                dm * u.pc / u.cm ** 3,
-                Planck18)
-            dA = z_da_precalc[z_da_precalc['tns_name'] == name]['dA'].tolist()[0] if precalc_z else \
-                cosmocalc.cosmocalc(z, const.BrightnessTemperature.H0, const.BrightnessTemperature.WM,
-                          const.BrightnessTemperature.WV)['DA_Mpc'] / 10 ** 3
-        except IndexError:
-            continue
+        z = z_da_precalc[z_da_precalc['tns_name'] == name]['z'].tolist()[0] if precalc_z else igm.z_from_DM(
+            dm * u.pc / u.cm ** 3,
+            Planck18)
+        dA = z_da_precalc[z_da_precalc['tns_name'] == name]['dA'].tolist()[0] if precalc_z else \
+            cosmocalc.cosmocalc(z, const.BrightnessTemperature.H0, const.BrightnessTemperature.WM,
+                      const.BrightnessTemperature.WV)['DA_Mpc'] / 10 ** 3
+
         d.update({'tns_name': name,
                   'dm': dm,
                   'flux': catalog[catalog['tns_name'] == name]['flux'].tolist()[0],
